@@ -32,5 +32,5 @@ mp = pow(c,dp,p)
 mq = pow(c,dq,q)
 I = gmpy2.invert(q,p)
 m = (((mp-mq)*I)%p)*q+mq
-number.to
-print(m)
+
+print(number.long_to_bytes(m))
