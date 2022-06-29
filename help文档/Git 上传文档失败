@@ -1,0 +1,7 @@
+系统证书问题，系统判断这个行为会造成不良影响，所以进行了阻止，只需要设置跳过SSL证书验证即可。
+
+1.在当前项目根目录中打开Git（右键选择 Git Bash Here）
+
+2.运行:
+
+git config --global http.sslVerify false
