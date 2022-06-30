@@ -1,0 +1,5 @@
+#from Crypto.Util import number
+
+
+#这个包，需要导入的是pycryptodome，直接在'File'->'settings'->'project:PycharmCode'->'Python Interpreter'->'pycryptodome'
+#安装这个pycryptodome这个包就可以了

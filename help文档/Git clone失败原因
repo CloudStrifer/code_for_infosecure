@@ -1,0 +1,14 @@
+https://blog.csdn.net/jiang877864109/article/details/117958660
+
+fatal: unable to access 'https://r8.googlesource.com/r8/': Failed to connect to r8.googlesource.com port 443: Operation timed out
+
+解决方案(在有翻墙的情况下):
+
+git config --global http.proxy "localhost:7072”
+如需要取消：
+
+git config --global --unset http.proxy
+拉取：
+
+git clone https://r8.googlesource.com/r8
+
