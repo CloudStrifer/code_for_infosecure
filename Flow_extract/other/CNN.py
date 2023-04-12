@@ -5,6 +5,7 @@ from torch.utils.data import  DataLoader
 import torch.nn.functional as F #使用functional中的ReLu激活函数
 import torch.optim as optim
 import time
+
 #数据的准备
 batch_size = 64
 #神经网络希望输入的数值较小，最好在0-1之间，所以需要先将原始图像(0-255的灰度值)转化为图像张量（值为0-1）
@@ -61,6 +62,7 @@ model = Net()
 #在这里加入两行代码，将数据送入GPU中计算！！！
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model.to(device)  #将模型的所有内容放入cuda中
+
 
 #设置损失函数和优化器
 criterion = torch.nn.CrossEntropyLoss()

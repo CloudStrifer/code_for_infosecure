@@ -4,8 +4,8 @@ from nfstream import NFStreamer, NFPlugin
 from pathlib import Path
 
 def main():
-    path_pcap = ("../datasets/pcap/")
-    path_flows = ("../datasets/flows/")
+    path_pcap = ("../datasets/pcap/")     #pcap流量文件路劲
+    path_flows = ("../datasets/flows/")   #输出后csv文件路劲
 
     for pcap_file in os.listdir(path_pcap):
         my_awesome_streamer = NFStreamer(source=path_pcap + pcap_file, accounting_mode = 2, statistical_analysis=True, n_dissections=255,)  # or network interface (source="eth0")

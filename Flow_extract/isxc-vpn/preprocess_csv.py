@@ -2,6 +2,10 @@ import csv
 import os
 import pandas as pd
 from pathlib import Path
+from prefix import PREFIX_TO_TRAFFIC_ID, ID_TO_TRAFFIC
+import numpy as np
+
+from sklearn import preprocessing
 
 # 删除多余特征
 def del_redundant_feature(df):
@@ -29,14 +33,33 @@ def standard_unit(df):
 
     return df
 
+#根据prefix.py文件中的标签，对不同文件做标记，数字为0-9
+#其中0: 'Chat',1: 'Email',2: 'File Transfer',3: 'Streaming', 4: 'Voip', 5: 'VPN: Chat', 6: 'VPN: File Transfer', 7: 'VPN: Email',
+# 8: 'VPN: Streaming', 9: 'VPN: Voip',
+def add_label(df, csv_file):
+    csv_file_prefix = csv_file.lower()[:-9]
+    df['label'] = PREFIX_TO_TRAFFIC_ID.get(csv_file_prefix)
+    return df
+
 
 if __name__ == '__main__':
-    csv_path = Path("../datasets/flows")
-    for csv_file in os.listdir(csv_path):
+    csv_path = Path("../datasets/flows")   #csv文件路劲
+    for csv_file in os.listdir(csv_path):   #针对每个csv文件，循环处理
+        data = []
+        label = []
         df = pd.read_csv("../datasets/flows/" + csv_file)
         #删除多余特征
         df = del_redundant_feature(df)
         df = standard_unit(df)
+        df = add_label(df, csv_file)
         print(df)
         #输出处理好的文件
         df.to_csv("../datasets/flows_new/" + csv_file)
+
+        # data.append(df[:])
+        # label.append(df['label'])
+        # data = np.array(data)
+        # label = np.array(label)
+        # np.savez("../datasets/flows_npz/" + csv_file, data=data, label=label)
+
+        print("")
