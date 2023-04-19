@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import os
 from sklearn.model_selection import train_test_split
 from prefix import PREFIX_TO_TRAFFIC_ID, ID_TO_TRAFFIC
+import ast
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 # 全局变量
 batch_size = 128  # 批处理样本数量
@@ -24,27 +25,26 @@ input_shape = (img_rows, img_cols,1)  # 输入图片的维度
 def get_training_data_set():
     csv_path = Path("../datasets/flows_new")
     flow_dataset = []
-    flow_picture_label = []
+    flow_picture_labels = []
     for csv_file in os.listdir(csv_path):
         df = pd.read_csv("../datasets/flows_new/" + csv_file)
         print(csv_file)
 
-        row, col = 1500, 1500
-        flow_picture_data = [[0 for _ in range(col)] for _ in range(row)]
+        #先提取文件，然后对这个文件做行循环，每一行提取其udps.time和udps.size这2个列里面的数据，放到1500x1500的二维矩阵中，组成一个list[[],[],[]]
+        for index, row in df.iterrows():
+            flow_picture_data = [[0 for _ in range(1500)] for _ in range(1500)] #创建1500x1500的二维矩阵
+            flow_picture_label = []
+            time = ast.literal_eval(row['udps.time'])  #返回list类型
+            size = ast.literal_eval(row['udps.size'])  #返回list类型
+            for i in range(len(time)):  #因为x和y数据长度是一样的，所以循环其中一个就可以了
+                if (time[i] < 1500 and size[i] < 1500): #接着把这个数据放到二维list列表里,其实就是组建一个二维流图
+                    flow_picture_data[time[i]][size[i]] = 1
+                    label = row['label']
+            flow_dataset.append(flow_picture_data)   #当前这一行的数据填充好以后，就放入集合里
+            flow_picture_labels.append(row['label'])
+        print("hehe")
 
-        for i in range(len(df)):
-                bidirectional_mean_ps = int(df.at[i,'bidirectional_mean_ps'])
-                bidirectional_duration_ms = int(df.at[i,'bidirectional_duration_ms'])
-                if (bidirectional_mean_ps < 1500 and bidirectional_duration_ms < 1500):
-                    flow_picture_data[bidirectional_mean_ps][bidirectional_duration_ms] = 1
-
-        csv_file_prefix = csv_file.lower()[:-9]
-        labels = PREFIX_TO_TRAFFIC_ID.get(csv_file_prefix)
-
-        flow_dataset.append(flow_picture_data)
-        flow_picture_label.append(labels)
-
-    return flow_dataset, flow_picture_label   # 图片为[[x,x,x..][x,x,x...][x,x,x...][x,x,x...]]的列表
+    return flow_dataset, flow_picture_labels   # 图片为[[x,x,x..][x,x,x...][x,x,x...][x,x,x...]]的列表
 
 datasets, labels = get_training_data_set()
 
@@ -78,7 +78,7 @@ model.add(Conv2D(20,(10,10),padding='same', strides=5))  # 卷积层2
 #model.add(AveragePooling2D(pool_size=(150,150),strides=2))  # 池化层
 model.add(MaxPooling2D(15,strides=1)) #池化层2
 model.add(Flatten())  # 拉成一维数据
-model.add(Dense(64))  # 全连接层2
+model.add(Dense(10))  # 全连接层2
 model.add(Activation('softmax'))  # sigmoid评分
 model.summary()
 # 编译模型
