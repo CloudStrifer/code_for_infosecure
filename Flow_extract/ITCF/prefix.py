@@ -129,6 +129,7 @@ PREFIX_TO_TRAFFIC_ID = {
     'vpn_ftps_b': 6,
     'vpn_sftp_a': 6,
     'vpn_sftp_b': 6,
+    'vpn_bittorrent': 6,
     'vpn_skype_files1a': 6,
     'vpn_skype_files1b': 6,
     # VPN: Email

@@ -76,7 +76,7 @@ def new_csv(data, filename):
 
 if __name__ == '__main__':
     # 指定文件夹路径
-    folder_path = 'E:\PyCharmCode\Flow_extract\FFEM\pcap'
+    folder_path = 'E:\PyCharmCode\Flow_extract\ITCF\pcap'
     # 遍历文件夹下的所有文件
     for filename in os.listdir(folder_path):
         # 判断文件是否为pcap文件
